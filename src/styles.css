@@ -1,1 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+
+
+/* Importaciones de estilo para AdminPro */
+
+@import 'assets/css/style.css';
+@import 'assets/css/colors/default-dark.css';
