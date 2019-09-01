@@ -4,4 +4,12 @@
 /* Importaciones de estilo para AdminPro */
 
 @import 'assets/css/style.css';
-@import 'assets/css/colors/default-dark.css';
+
+/* @import 'assets/css/colors/default-dark.css'; */
+
+
+/* Estilos propios */
+
+#themecolors a {
+    cursor: pointer;
+}

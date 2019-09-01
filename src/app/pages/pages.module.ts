@@ -13,6 +13,7 @@ import { PagesRoutingModule } from './pages-routing.modules';
 import { IncrementadorComponent } from '../components/incrementador/incrementador.component';
 import { ChartsModule } from 'ng2-charts';
 import { GraficaDonutComponent } from '../components/grafica-donut/grafica-donut.component';
+import { AccountSettingsComponent } from './account-settings/account-settings.component';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { GraficaDonutComponent } from '../components/grafica-donut/grafica-donut
         ProgressComponent,
         Graficas1Component,
         IncrementadorComponent,
-        GraficaDonutComponent
+        GraficaDonutComponent,
+        AccountSettingsComponent
     ],
     providers: [],
 })
