@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subscriber } from 'rxjs';
 
-import { retry } from 'rxjs/operators';
+import { map, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-rxjs',
@@ -12,9 +12,7 @@ export class RxjsComponent implements OnInit {
 
   constructor() {
 
-    this.regresaObservable().pipe(
-      retry(2)
-    )
+    this.regresaObservable()
     .subscribe(
        numero =>  console.log( 'subs: ', numero ),
        error => console.error ('Error en el observador', error),
@@ -27,26 +25,49 @@ export class RxjsComponent implements OnInit {
   }
 
 
-  regresaObservable(): Observable<number> {
-    return new Observable(  observer => {
+  regresaObservable(): Observable<any> {
+    return new Observable(  (observer: Subscriber<any>) => {
       let contador = 0;
 
       const intervalo = setInterval( () => {
         contador ++;
-        observer.next( contador );
+
+        const salida = {
+          valor: contador
+        }
+
+        observer.next( salida );
 
         if ( contador === 3) {
           clearInterval(intervalo);
           observer.complete();
         }
 
-        if (contador === 2) {
-          // clearInterval(intervalo);
-          observer.error('mal');
-        }
+        // if (contador === 2) {
+        //   // clearInterval(intervalo);
+        //   observer.error('mal');
+        // }
 
       }, 1000);
 
-    });
+    }).pipe( 
+          // map( resp => resp.valor ) forma corta
+          map( resp => {
+            return resp.valor
+          }
+        ), 
+        //filtro para devolver solo los impares
+        filter( (valor, index) => {
+
+          if ( (valor % 2) === 1 ){
+            //impar
+            return true 
+          } else{
+            //par
+            return false
+
+          }
+        })
+    );
   }
 }
