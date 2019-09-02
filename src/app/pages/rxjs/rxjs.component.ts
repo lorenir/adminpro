@@ -62,15 +62,15 @@ export class RxjsComponent implements OnInit, OnDestroy {
             return resp.valor
           }
         ), 
-        //filtro para devolver solo los impares
+        // filtro para devolver solo los impares
         filter( (valor, index) => {
 
           if ( (valor % 2) === 1 ){
             //impar
-            return true 
+            return true;
           } else{
             //par
-            return false
+            return false;
 
           }
         })
