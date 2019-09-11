@@ -7,6 +7,9 @@ import { Graficas1Component } from './graficas1/graficas1.component';
 
 import { FormsModule } from '@angular/forms';
 
+//PIPES
+import { PipesModule } from '../pipes/pipes.module';
+
 //MODULOS
 import { SharedModule } from '../shared/shared.module';
 import { PagesRoutingModule } from './pages-routing.modules';
@@ -16,14 +19,18 @@ import { GraficaDonutComponent } from '../components/grafica-donut/grafica-donut
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { PromesasComponent } from './promesas/promesas.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
+import { ProfileComponent } from './profile/profile.component';
+import { CommonModule } from '@angular/common';
 
 
 @NgModule({
     imports: [
+        CommonModule,
         SharedModule,
         PagesRoutingModule,
         FormsModule,
         ChartsModule,
+        PipesModule
     ],
     exports: [
         DashboardComponent,
@@ -39,7 +46,8 @@ import { RxjsComponent } from './rxjs/rxjs.component';
         GraficaDonutComponent,
         AccountSettingsComponent,
         PromesasComponent,
-        RxjsComponent
+        RxjsComponent,
+        ProfileComponent
     ],
     providers: [],
 })
