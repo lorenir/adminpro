@@ -21,7 +21,6 @@ export class ImagenPipe implements PipeTransform {
     switch ( tipo ) {
       case 'usuarios':
         url += '/usuarios/' + img;
-        console.log(url);
         break;
 
       case 'medicos':

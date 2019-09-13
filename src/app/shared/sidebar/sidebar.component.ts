@@ -9,7 +9,7 @@ import { Usuario } from '../../models/usuario.model';
 })
 export class SidebarComponent implements OnInit {
 
-  usuario : Usuario;
+  usuario: Usuario;
 
   constructor( 
       public sidebarService: SidebarService,
