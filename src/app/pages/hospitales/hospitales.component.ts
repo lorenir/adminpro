@@ -1,43 +1,42 @@
 import { Component, OnInit } from '@angular/core';
-import { Usuario } from '../../models/usuario.model';
-import { UsuarioService } from '../../services/service.index';
+import { HospitalService } from '../../services/hospital/hospital.service';
+import { Hospital } from 'src/app/models/hospital.model';
 import Swal from 'sweetalert2';
 import { ModalUploadService } from '../../components/modal-upload/modal-upload.service';
 
 @Component({
-  selector: 'app-usuarios',
-  templateUrl: './usuarios.component.html',
-  styleUrls: ['./usuarios.component.css']
+  selector: 'app-hospitales',
+  templateUrl: './hospitales.component.html',
+  styleUrls: ['./hospitales.component.css']
 })
-export class UsuariosComponent implements OnInit {
+export class HospitalesComponent implements OnInit {
 
-  usuarios: Usuario[] = [];
+  hospitales: Hospital[] = [];
   desde: number = 0;
   total: number = 0;
   cargando: boolean = true;
 
-  constructor( 
-    public usuarioService: UsuarioService,
-    public modalUploadService: ModalUploadService) { }
+  hospital: Hospital;
+
+  constructor(
+    public hospitalService: HospitalService,
+    public modalUploadService: ModalUploadService
+  ) { }
 
   ngOnInit() {
-    this.cargarUsuarios( );
+    this.cargarHospitales();
 
     this.modalUploadService.notificacion
-        .subscribe( resp => this.cargarUsuarios() );
+        .subscribe( resp => this.cargarHospitales() );
   }
 
-  mostrarModal( id: string) {
-    this.modalUploadService.mostrarModal('usuarios', id);
 
-  }
-
-  cargarUsuarios() {
+  cargarHospitales() {
     this.cargando = true;
-    this.usuarioService.cargarUsuarios( this.desde )
+    this.hospitalService.cargarHospitales( this.desde )
               .subscribe( (resp: any) => {
-                this.usuarios = resp.usuarios;
-                this.total = resp.total;
+                this.hospitales = resp;
+                this.total = this.hospitalService.totalHospitales;
                 this.cargando = false;
               });
 
@@ -56,36 +55,45 @@ export class UsuariosComponent implements OnInit {
     }
 
     this.desde += valor;
-    this.cargarUsuarios();
-
+    this.cargarHospitales();
 
   }
 
-  buscarUsuario( termino: string) {
+  mostrarModal( id: string) {
+    this.modalUploadService.mostrarModal('hospitales', id);
+
+  }
+
+  obtenerHospital( id: string) {
+    this.cargando = true;
+    this.hospitalService.obtenerHospital( id )
+              .subscribe( (resp: any) => {
+                this.hospital = resp;
+                this.cargando = false;
+              });
+
+  }
+
+  buscarHospital( termino: string) {
     if (!termino) {
       return;
     }
     if (termino.length < 3) {
-      this.cargarUsuarios();
+      this.cargarHospitales();
       return;
     }
 
     this.cargando = true;
 
-    this.usuarioService.buscarUsuario( termino )
-              .subscribe( (usuarios: Usuario[]) => {
+    this.hospitalService.buscarHospital( termino )
+              .subscribe( (hospitales: Hospital[]) => {
 
-                this.usuarios = usuarios;
+                this.hospitales = hospitales;
                 this.cargando = false;
               });
   }
 
-  borrarUsuario( usuario: Usuario ) {
-    
-    if ( usuario._id === this.usuarioService.usuario._id ){
-      Swal.fire('No puede borrar el usuario', 'No se puede borrar el usuario actualmente autenticado', 'error');
-      return;
-    }
+  borrarHospital( hospital: Hospital ) {
 
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
@@ -96,7 +104,7 @@ export class UsuariosComponent implements OnInit {
     });
     swalWithBootstrapButtons.fire({
       title: '¿Estás seguro?',
-      text: 'Está a punto de borrar a: ' + usuario.nombre,
+      text: 'Está a punto de borrar a: ' + hospital.nombre,
       type: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Si, eliminalo',
@@ -106,16 +114,16 @@ export class UsuariosComponent implements OnInit {
 
       if (result.value) {
 
-        this.usuarioService.borrarUsuario( usuario._id )
+        this.hospitalService.borrarHospital( hospital._id )
               .subscribe( (resp: any) => {
-                this.cargarUsuarios();
+                this.cargarHospitales();
 
                 console.log('resp: ', resp);
 
                 if (resp.ok) {
                   swalWithBootstrapButtons.fire(
                     'Eliminado!',
-                    `El usuario ${usuario.nombre} ha sido eliminado`,
+                    `El hospital ${hospital.nombre} ha sido eliminado`,
                     'success'
                     );
                 } else {
@@ -137,12 +145,7 @@ export class UsuariosComponent implements OnInit {
     });
   }
 
-  guardarUsuario( usuario: Usuario ) {
-
-    // if ( usuario._id === this.usuarioService.usuario._id ){
-    //   Swal.fire('No puede borrar el usuario', 'No se puede borrar el usuario actualmente autenticado', 'error');
-    //   return;
-    // }
+  guardarHospital( hospital: Hospital ) {
 
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
@@ -153,7 +156,7 @@ export class UsuariosComponent implements OnInit {
     });
     swalWithBootstrapButtons.fire({
       title: '¿Estás seguro?',
-      text: 'Está a punto de modifica a: ' + usuario.nombre,
+      text: 'Está a punto de modifica a: ' + hospital.nombre,
       type: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Si, modificalo',
@@ -163,13 +166,13 @@ export class UsuariosComponent implements OnInit {
 
       if (result.value) {
 
-        this.usuarioService.actualizarUsuario( usuario )
+        this.hospitalService.actualizarHospital( hospital )
               .subscribe( (resp: any) => {
-                this.cargarUsuarios();
+                this.cargarHospitales();
                 if (resp) {
                   swalWithBootstrapButtons.fire(
                     'Modificado!',
-                    `El usuario ${usuario.nombre} ha sido modificado`,
+                    `El hospital ${hospital.nombre} ha sido modificado`,
                     'success'
                     );
                 } else {
@@ -191,9 +194,44 @@ export class UsuariosComponent implements OnInit {
     });
   }
 
+  async crearHospital() {
 
-  isEmailEditable(usuario: Usuario) {
-    return !(usuario._id === this.usuarioService.usuario._id) && (!usuario.google);
+    const { value: nombreHospital } = await Swal.fire({
+      title: 'Introduzca el nombre del hospital',
+      input: 'text',
+      inputValue: '',
+      showCancelButton: true,
+      inputValidator: (value) => {
+        if (!value) {
+          return 'El nombre del hospital es requerido';
+        }
+      }
+    });
+
+    if (nombreHospital) {
+      const hospital: Hospital = new Hospital(nombreHospital);
+
+      this.hospitalService.crearHospital( hospital )
+      .subscribe( (resp: any) => {
+        this.cargarHospitales();
+        if (resp) {
+          Swal.fire(`Creado el Hospital ${nombreHospital}`);
+        } else {
+            Swal.fire(
+              'No se ha podido crear el hospital!',
+              'Algo ha fallado en el servidor',
+              'error');
+        }
+      }, (error: any) => {
+            Swal.fire('No se ha podido crear el hospital!',
+            'Algo ha fallado en el servidor',
+            'error');
+
+        }
+    );
+
+    }
   }
 
 }
+
