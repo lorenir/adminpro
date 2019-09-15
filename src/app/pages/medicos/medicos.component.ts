@@ -184,45 +184,6 @@ export class MedicosComponent implements OnInit {
     });
   }
 
-  async crearMedico() {
-
-    // const { value: nombreHospital } = await Swal.fire({
-    //   title: 'Introduzca el nombre del hospital',
-    //   input: 'text',
-    //   inputValue: '',
-    //   showCancelButton: true,
-    //   inputValidator: (value) => {
-    //     if (!value) {
-    //       return 'El nombre del hospital es requerido';
-    //     }
-    //   }
-    // });
-
-    // if (nombreHospital) {
-    //   const hospital: Hospital = new Hospital(nombreHospital);
-
-    //   this.hospitalService.crearHospital( hospital )
-    //   .subscribe( (resp: any) => {
-    //     this.cargarHospitales();
-    //     if (resp) {
-    //       Swal.fire(`Creado el Hospital ${nombreHospital}`);
-    //     } else {
-    //         Swal.fire(
-    //           'No se ha podido crear el hospital!',
-    //           'Algo ha fallado en el servidor',
-    //           'error');
-    //     }
-    //   }, (error: any) => {
-    //         Swal.fire('No se ha podido crear el hospital!',
-    //         'Algo ha fallado en el servidor',
-    //         'error');
-
-    //     }
-    // );
-
-    // }
-  }
-
 }
 
 
