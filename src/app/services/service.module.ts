@@ -10,6 +10,7 @@ import { SettingsService,
           LoginGuard
 } from './service.index';
 import { HospitalService } from './hospital/hospital.service';
+import { MedicoService } from './medico/medico.service';
 
 
 
@@ -26,6 +27,7 @@ import { HospitalService } from './hospital/hospital.service';
     SharedService,
     UsuarioService,
     HospitalService,
+    MedicoService,
     LoginGuard,
     ModalUploadService
   ],
