@@ -86,7 +86,7 @@ export class MedicoService {
 
     if ( medico._id ) {
       return this.actualizarMedico(medico);
-    } else{
+    } else {
       return this.crearMedico( medico );
 
     }
