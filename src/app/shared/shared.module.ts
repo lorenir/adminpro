@@ -7,6 +7,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { BreadcrumsComponent } from './breadcrums/breadcrums.component';
 import { NopagefoundComponent } from './nopagefound/nopagefound.component';
 import { PipesModule } from '../pipes/pipes.module';
+import { ModalUploadComponent } from '../components/modal-upload/modal-upload.component';
 
 
 @NgModule({
@@ -19,14 +20,16 @@ import { PipesModule } from '../pipes/pipes.module';
         HeaderComponent,
         SidebarComponent,
         BreadcrumsComponent,
-        NopagefoundComponent
+        NopagefoundComponent,
+        ModalUploadComponent
 
     ],
     declarations: [
         HeaderComponent,
         SidebarComponent,
         BreadcrumsComponent,
-        NopagefoundComponent
+        NopagefoundComponent,
+        ModalUploadComponent
 ],
     providers: [],
 })
