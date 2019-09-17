@@ -4,6 +4,7 @@ import { NgForm } from '@angular/forms';
 import { UsuarioService } from '../services/usuario/usuario.service';
 import { Usuario } from '../models/usuario.model';
 import { element } from 'protractor';
+import Swal from 'sweetalert2';
 
 declare function init_plugins();
 declare const gapi: any;
@@ -71,9 +72,17 @@ export class LoginComponent implements OnInit {
     }
 
     const usuario = new Usuario(null, forma.value.email, forma.value.password );
-
+    // this.router.navigate(['/dashboard'])
     this.usuarioService.login(usuario, forma.value.recuerdame)
-            .subscribe( correcto => this.router.navigate(['/dashboard']));
+             .subscribe(
+               correcto => this.router.navigate(['/dashboard']),
+               err => Swal.fire('Error en el login', err.error.mensaje, 'error')
+             );
+            // .subscribe( correcto => {
+            //   this.router.navigate(['/dashboard'])
+            // }, (err: any) => {
+            //   Swal.fire('Error en el login', err.error.mensaje, 'error');
+            // });
   }
 
 }

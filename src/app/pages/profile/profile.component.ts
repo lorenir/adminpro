@@ -31,7 +31,10 @@ export class ProfileComponent implements OnInit {
     }
 
     this.usuarioService.actualizarUsuario( this.usuario )
-              .subscribe();
+              .subscribe(
+                resp => resp,
+                err => Swal.fire(err.error.mensaje, err.error.errors.message, 'error')
+              );
   }
 
   seleccionImagen( archivo: File ) {
